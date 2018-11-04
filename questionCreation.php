@@ -13,7 +13,7 @@ session_start();
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>QCM Master - Création d'un nouveau QCM</title>
+  <title>SB Admin - Dashboard</title>
 
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -57,15 +57,31 @@ session_start();
 
       }
     }
-    xhr.open("POST","affichageThemes.php",true);
+    xhr.open("POST","creationTheme.php",true);
     xhr.send(null);
   }
 
+  function affichageChampsQuestions(){
+    select = document.getElementById("selectQuestionNumber");
+    //on choisit l'index qui est séléctionné
+    choice = select.selectedIndex;
+    //on recupère sa valeur
+    nbQuestion = select.options[choice].value;
+    //on initialise la zone de questions à vide
+    document.getElementById('affichageQuestions').innerHTML="";
 
-  function creationTheme(){
+    for(var i=1; i<=nbQuestion; i++){
+      question=' <div class="form-group"> <label for="exampleInputEmail1"><i class="far fa-question-circle"></i> Question</label> <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"></div>';
 
-    $html='<label for="formGroupExampleInput">Nouveau thème</label><input type="text" name="nomThemeCree" class="form-control" id="formGroupExampleInput" placeholder="titre thème">';
-    document.getElementById('resultatradio').innerHTML=$html;
+
+      document.getElementById('affichageQuestions').innerHTML+='</br><h2><i class="fas fa-arrow-right"></i> Question '+i+'</h2>';
+      document.getElementById('affichageQuestions').innerHTML+=question;
+      for(var j=0; j<4;j++){
+        reponse='<i class="far fa-question-circle"></i> Cocher si correcte</br><div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" aria-label="Checkbox for following text input"></div></div><input type="text" class="form-control" aria-label="Text input with checkbox"></div>';
+
+        document.getElementById('affichageQuestions').innerHTML+=reponse;
+      }
+    }
 
   }
 
@@ -181,70 +197,56 @@ session_start();
           <div class="container-fluid">
             <div class="jumbotron jumbotron-fluid">
               <div class="container">
-                <h3 class="display-4">Créer le QCM</h3>
+                <h3 class="display-4">Ajouter des questions</h3>
                 <hr class="my-4">
-                <p class="lead"> Renseignez les infos de base de votre nouveau QCM </p>
+                <p class="lead"> Pour valider la création du QCM, ajouter ou choisir une question </p>
               </div>
             </div>
+            <label>Choisir le nombre de question à ajouter</label></br>
+            <select class="custom-select" id="selectQuestionNumber" onchange="affichageChampsQuestions()">
+              <option value="">Nombre questions...</option>
+              <option value=1>1</option>
+              <option value=2>2</option>
+              <option value=3>3</option>
+              <option value=4>4</option>
+              <option value=5>5</option>
+              <option value=6>6</option>
+              <option value=7>7</option>
+              <option value=8>8</option>
+              <option value=9>9</option>
+              <option value=10>10</option>
 
-            <form class="form" method="post" action="ajoutQCMTrtmt.php">
-              <div class="form-group">
-                <label for="formGroupExampleInput">Titre</label>
-                <input type="text" name="titreQCM" class="form-control" id="formGroupExampleInput" placeholder="titre QCM" required>
-              </div>
-              <fieldset class="form-group row">
-                <div class="col-sm-10">
-                  <label for="formGroupExampleInput">Choix du thème</label>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" onclick="creationTheme()" >
-                      Créer un nouveau thème
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2" onclick="choixTheme()">
-                      En choisir un déjà existant
-                    </label>
-                  </div>
-                  <div id="resultatradio" class="form-group">
-                  </div>
-                </br>
-
-                  <button type="submit" class="btn btn-primary">Création du QCM</button>
-                </div>
-
-
-              </fieldset>
-
-
-            </form>
+            </select>
+          </br>
+          <div id="affichageQuestions">
           </div>
+
         </div>
+      </div>
 
 
 
 
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <!-- Bootstrap core JavaScript-->
+      <script src="vendor/jquery/jquery.min.js"></script>
+      <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-        <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+      <!-- Core plugin JavaScript-->
+      <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-        <!-- Page level plugin JavaScript-->
-        <script src="vendor/chart.js/Chart.min.js"></script>
-        <script src="vendor/datatables/jquery.dataTables.js"></script>
-        <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+      <!-- Page level plugin JavaScript-->
+      <script src="vendor/chart.js/Chart.min.js"></script>
+      <script src="vendor/datatables/jquery.dataTables.js"></script>
+      <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin.min.js"></script>
+      <!-- Custom scripts for all pages-->
+      <script src="js/sb-admin.min.js"></script>
 
-        <!-- Demo scripts for this page-->
-        <script src="js/demo/datatables-demo.js"></script>
-        <script src="js/demo/chart-area-demo.js"></script>
+      <!-- Demo scripts for this page-->
+      <script src="js/demo/datatables-demo.js"></script>
+      <script src="js/demo/chart-area-demo.js"></script>
 
-      </body>
+    </body>
 
-      </html>
+    </html>
