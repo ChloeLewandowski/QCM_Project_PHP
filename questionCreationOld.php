@@ -1,26 +1,19 @@
 <!DOCTYPE html>
 <?php
 include("connexionBD.php");
-//verifie si l'utilisateur est connecté
-require "verif_SessionTrtmt.php";
-
+session_start();
 ?>
 <html lang="en">
 
 <head>
 
-  <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>QCM Master - Création d'un nouveau QCM</title>
+  <title>SB Admin - Dashboard</title>
 
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -33,11 +26,6 @@ require "verif_SessionTrtmt.php";
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
-
-
-
-  <!-- customisation js de la liste avec Checkbox -->
-  <script type="text/javascript" src="js/checkedListGroup.js"></script>
   <script>
   function getXhr(){
     var xhr = null;
@@ -57,22 +45,47 @@ require "verif_SessionTrtmt.php";
     return xhr;
   }
 
+  function choixTheme(){
+    var xhr = getXhr();
+    // On défini ce qu'on va faire quand on aura la réponse
+    xhr.onreadystatechange = function(){
+      //Traitement seulement si on a tout reçu et que la réponse est ok
+      if(xhr.readyState == 4 && xhr.status == 200){
 
-  function displayQuestions(){
-   var xhr = getXhr();
-   // On défini ce qu'on va faire quand on aura la réponse
-   xhr.onreadystatechange = function(){
-   //Traitement seulement si on a tout reçu et que la réponse est ok
-   if(xhr.readyState == 4 && xhr.status == 200){
+        var html= this.responseText;
+        document.getElementById('resultatradio').innerHTML=html;
 
-  var html= this.responseText;
-  document.getElementById("listQuestions").innerHTML=html;
+      }
+    }
+    xhr.open("POST","creationTheme.php",true);
+    xhr.send(null);
+  }
 
-   }
-   }
-   xhr.open("GET","affichageQuestionsTrtmt.php?a="+document.getElementById('nomThemeSelec').value,true);
-   xhr.send(null);
-   }
+  function affichageChampsQuestions(){
+    select = document.getElementById("selectQuestionNumber");
+    //on choisit l'index qui est séléctionné
+    choice = select.selectedIndex;
+    //on recupère sa valeur
+    nbQuestion = select.options[choice].value;
+    //on initialise la zone de questions à vide
+    document.getElementById('affichageQuestions').innerHTML="";
+
+    for(var i=1; i<=nbQuestion; i++){
+
+      //html de l'affichage de l'en-tête de la question et de son champ de saisie
+      enteteQuestion = '</br><h2><i class="fas fa-arrow-right"></i> Question '+i+'</h2>';
+      question=' <div class="form-group"> <label for="question'+i+'"><i class="far fa-question-circle"></i> Question</label> <input class="form-control" name="question'+i+'" id="question'+i+'" aria-describedby="emailHelp" placeholder="Question..."></div>';
+
+      document.getElementById('affichageQuestions').innerHTML+=enteteQuestion;
+      document.getElementById('affichageQuestions').innerHTML+=question;
+
+      for(var j=1; j<=4;j++){
+        reponse='<i class="far fa-question-circle"></i> Réponse (cocher si correcte)</br><div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" name="isChecked'+i+j+'" aria-label="Checkbox for following text input"></div></div><input type="text" class="form-control" aria-label="Text input with checkbox" name="reponse'+i+j+'" placeholder="Réponse proposée..."></div>';
+        document.getElementById('affichageQuestions').innerHTML+=reponse;
+      }
+    }
+
+  }
 
   </script>
 
@@ -174,81 +187,75 @@ require "verif_SessionTrtmt.php";
           <i class="fas fa-fw fa-question"></i>
           <span>Créer un QCM</span></a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-brain"></i>
-            <span>Gérer la base de questions</span>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="baseQuestions.php"><i class="fas fa-glasses"></i> Consulter</a>
-            <a class="dropdown-item" href="questionCreation.php"><i class="fas fa-plus"></i> Ajouter</a>
+        <li class="nav-item">
+          <a class="nav-link" href="tables.html">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Tables</span></a>
+          </li>
+        </ul>
+        <div id="content-wrapper">
 
+          <!-- Affichage de l'en-tête du QCM -->
+          <div class="container-fluid">
+            <div class="jumbotron jumbotron-fluid">
+              <div class="container">
+                <h3 class="display-4">Ajouter des questions</h3>
+                <hr class="my-4">
+                <p class="lead"> Pour valider la création du QCM, ajouter ou choisir une question </p>
+              </div>
+            </div>
+            <form class="form" method="post" action="ajoutQuestionsTrtmt.php">
+              <div class="form-group">
+            <label>Choisir le nombre de question à ajouter</label></br>
+            <select class="custom-select" id="selectQuestionNumber" name="selectQuestionNumber" onchange="affichageChampsQuestions()">
+              <option value="">Nombre questions...</option>
+              <option value=1>1</option>
+              <option value=2>2</option>
+              <option value=3>3</option>
+              <option value=4>4</option>
+              <option value=5>5</option>
+              <option value=6>6</option>
+              <option value=7>7</option>
+              <option value=8>8</option>
+              <option value=9>9</option>
+              <option value=10>10</option>
+
+            </select>
           </div>
-        </li>
-      </ul>
-      <div id="content-wrapper">
-
-        <!-- Affichage de l'en-tête du QCM -->
-        <div class="container-fluid">
-          <div class="jumbotron jumbotron-fluid">
-            <div class="container">
-              <h3 class="display-4">Créer le QCM</h3>
-              <hr class="my-4">
-              <p class="lead"> Renseignez les infos de base de votre nouveau QCM </p>
-            </div>
-          </div>
-
-          <form class="form" method="post" action="ajoutQCMTrtmt.php">
-            <div class="form-group">
-              <i class="fas fa-pencil-alt"></i> <label for="formGroupExampleInput"> Titre</label>
-              <input type="text" name="titreQCM" class="form-control" id="titreQCM" placeholder="titre QCM" required>
-            </div>
-
-            <div class="form-group">
-              <?php include("affichageThemes.php"); ?>
-            </div>
-
-            <div class="col-xs-6">
-           <!-- <h3 class="text-center">Selectionner les questions à ajouter au QCM</h3> -->
-          <i class="far fa-question-circle"></i> <label for="listQuestions"> Selectionner les questions à ajouter au qcm</label>
-          <?php echo'<div id="listQuestions"></div>'?>
-       </div>
           </br>
+          <div id="affichageQuestions">
+            <!-- on recupère ici l'affichage des questions et réponses associées avec la fonction appellée précédemment dans le onChange() -->
+          </div>
+        </br>
+          <button class="btn btn-primary" type="submit">Valider</button>
 
-          <button type="submit" class="btn btn-primary">Création du QCM</button>
         </div>
-
-
-
-
-
       </form>
-    </div>
-  </div>
+      </div>
 
 
 
 
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <!-- Bootstrap core JavaScript-->
+      <script src="vendor/jquery/jquery.min.js"></script>
+      <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+      <!-- Core plugin JavaScript-->
+      <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-  <!-- Page level plugin JavaScript-->
-  <script src="vendor/chart.js/Chart.min.js"></script>
-  <script src="vendor/datatables/jquery.dataTables.js"></script>
-  <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+      <!-- Page level plugin JavaScript-->
+      <script src="vendor/chart.js/Chart.min.js"></script>
+      <script src="vendor/datatables/jquery.dataTables.js"></script>
+      <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
 
-  <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin.min.js"></script>
+      <!-- Custom scripts for all pages-->
+      <script src="js/sb-admin.min.js"></script>
 
-  <!-- Demo scripts for this page-->
-  <script src="js/demo/datatables-demo.js"></script>
-  <script src="js/demo/chart-area-demo.js"></script>
+      <!-- Demo scripts for this page-->
+      <script src="js/demo/datatables-demo.js"></script>
+      <script src="js/demo/chart-area-demo.js"></script>
 
-</body>
+    </body>
 
-</html>
+    </html>

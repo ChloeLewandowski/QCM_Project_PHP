@@ -1,9 +1,9 @@
 <?php
 include("connexionBD.php");
-session_start();
+
 ?>
-<label for="formGroupExampleInput">Chosir un thème déja existant</label>
-<select class="custom-select" name="nomThemeSelec">
+<i class="fas fa-book"></i> <label for="formGroupExampleInput"> Chosir un thème existant</label>
+<select class="custom-select" name="nomThemeSelec" id="nomThemeSelec" onchange="displayQuestions()">
   <option selected>Choisir le thème</option>;
 
   <?php

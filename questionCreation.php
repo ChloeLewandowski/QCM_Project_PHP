@@ -61,27 +61,14 @@ session_start();
     xhr.send(null);
   }
 
-  function affichageChampsQuestions(){
-    select = document.getElementById("selectQuestionNumber");
+  function reinitialiserChamps(){
+    select = document.getElementById("affichageQuestions");
     //on choisit l'index qui est séléctionné
     choice = select.selectedIndex;
     //on recupère sa valeur
     nbQuestion = select.options[choice].value;
     //on initialise la zone de questions à vide
     document.getElementById('affichageQuestions').innerHTML="";
-
-    for(var i=1; i<=nbQuestion; i++){
-      question=' <div class="form-group"> <label for="exampleInputEmail1"><i class="far fa-question-circle"></i> Question</label> <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"></div>';
-
-
-      document.getElementById('affichageQuestions').innerHTML+='</br><h2><i class="fas fa-arrow-right"></i> Question '+i+'</h2>';
-      document.getElementById('affichageQuestions').innerHTML+=question;
-      for(var j=0; j<4;j++){
-        reponse='<i class="far fa-question-circle"></i> Cocher si correcte</br><div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" aria-label="Checkbox for following text input"></div></div><input type="text" class="form-control" aria-label="Text input with checkbox"></div>';
-
-        document.getElementById('affichageQuestions').innerHTML+=reponse;
-      }
-    }
 
   }
 
@@ -180,16 +167,22 @@ session_start();
           <a class="dropdown-item" href="blank.html">Blank Page</a>
         </div>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="charts.html">
           <i class="fas fa-fw fa-question"></i>
           <span>Créer un QCM</span></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="tables.html">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span></a>
-          </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-brain"></i>
+            <span>Gérer la base de questions</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="baseQuestions.php"><i class="fas fa-glasses"></i> Consulter</a>
+            <a class="dropdown-item" href="questionCreation.php"><i class="fas fa-plus"></i> Ajouter</a>
+
+          </div>
+        </li>
         </ul>
         <div id="content-wrapper">
 
@@ -197,56 +190,53 @@ session_start();
           <div class="container-fluid">
             <div class="jumbotron jumbotron-fluid">
               <div class="container">
-                <h3 class="display-4">Ajouter des questions</h3>
-                <hr class="my-4">
-                <p class="lead"> Pour valider la création du QCM, ajouter ou choisir une question </p>
+                <h4 class="display-4">Ajouter une question</h4>
               </div>
             </div>
-            <label>Choisir le nombre de question à ajouter</label></br>
-            <select class="custom-select" id="selectQuestionNumber" onchange="affichageChampsQuestions()">
-              <option value="">Nombre questions...</option>
-              <option value=1>1</option>
-              <option value=2>2</option>
-              <option value=3>3</option>
-              <option value=4>4</option>
-              <option value=5>5</option>
-              <option value=6>6</option>
-              <option value=7>7</option>
-              <option value=8>8</option>
-              <option value=9>9</option>
-              <option value=10>10</option>
+            <form class="form" method="post" action="ajoutQuestionsTrtmt.php">
+              <div class="form-group">
 
-            </select>
+              </div>
+            </br>
+            <div id="affichageQuestions">
+              <?php include("affichageThemes.php"); ?>
+              <div class="form-group"> <label for="question"><i class="far fa-question-circle"></i> Question</label> <input class="form-control" name="question" id="question" aria-describedby="emailHelp" placeholder="Question..."></div>
+              <i class="far fa-question-circle"></i> Réponses (cocher si correcte)</br><div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" name="isChecked1" aria-label="Checkbox for following text input"></div></div><input type="text" class="form-control" aria-label="Text input with checkbox" name="reponse1" placeholder="Réponse proposée..."></div>
+              <div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" name="isChecked2" aria-label="Checkbox for following text input"></div></div><input type="text" class="form-control" aria-label="Text input with checkbox" name="reponse2" placeholder="Réponse proposée..."></div>
+              <div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" name="isChecked3" aria-label="Checkbox for following text input"></div></div><input type="text" class="form-control" aria-label="Text input with checkbox" name="reponse3" placeholder="Réponse proposée..."></div>
+              <div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" name="isChecked4" aria-label="Checkbox for following text input"></div></div><input type="text" class="form-control" aria-label="Text input with checkbox" name="reponse4" placeholder="Réponse proposée..."></div>
+            </div>
           </br>
-          <div id="affichageQuestions">
-          </div>
+          <button class="btn btn-primary" type="submit">Valider</button>
+          <button type="button" class="btn btn-danger">Effacer les données</button>
 
         </div>
-      </div>
+      </form>
+    </div>
 
 
 
 
 
-      <!-- Bootstrap core JavaScript-->
-      <script src="vendor/jquery/jquery.min.js"></script>
-      <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-      <!-- Core plugin JavaScript-->
-      <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-      <!-- Page level plugin JavaScript-->
-      <script src="vendor/chart.js/Chart.min.js"></script>
-      <script src="vendor/datatables/jquery.dataTables.js"></script>
-      <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/datatables/jquery.dataTables.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
 
-      <!-- Custom scripts for all pages-->
-      <script src="js/sb-admin.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin.min.js"></script>
 
-      <!-- Demo scripts for this page-->
-      <script src="js/demo/datatables-demo.js"></script>
-      <script src="js/demo/chart-area-demo.js"></script>
+    <!-- Demo scripts for this page-->
+    <script src="js/demo/datatables-demo.js"></script>
+    <script src="js/demo/chart-area-demo.js"></script>
 
-    </body>
+  </body>
 
-    </html>
+  </html>
