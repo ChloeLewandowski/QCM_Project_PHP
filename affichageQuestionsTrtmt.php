@@ -19,13 +19,13 @@ echo' <div class="table-responsive">
 
 <thead>
 
-<th><input type="checkbox" id="checkall" /></th>
+<th></th>
 <th>Question content</th>
 </thead>
 <tbody>';
 while($data=$req2->fetch()){
   echo'<tr>';
-  echo'<td><input type="checkbox" class="checkthis" id=checkQuestion'.$data['questionID'].'/></td>';
+  echo'<td><input type="checkbox" class="checkthis" name=checkQuestion'.$data["questionID"].'></td>';
   echo'<td>'.$data['questionContent'].'</td></tr>';
 }
 echo'  </tbody></table></div></div>';

@@ -2,7 +2,7 @@
 include("connexionBD.php");
 
 ?>
-<i class="fas fa-book"></i> <label for="formGroupExampleInput"> Chosir un thème existant</label>
+<i class="fas fa-book"></i> <label for="formGroupExampleInput"> Chosir un thème</label>
 <select class="custom-select" name="nomThemeSelec" id="nomThemeSelec" onchange="displayQuestions()">
   <option selected>Choisir le thème</option>;
 
