@@ -42,78 +42,65 @@ require "verif_SessionTrtmt.php";
             <i class="fas fa-fw fa-book"></i>
             <span>Gérer les thèmes</span></a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="baseQCM.php">
               <i class="fas fa-comment-dots"></i>
               <span>Publier des QCM</span></a>
             </li>
+
+
           </ul>
 
           <div id="content-wrapper">
-            <div class="container-fluid">
+            <div id="container-fluid">
               <div class="jumbotron jumbotron-fluid">
                 <div class="container">
-                  <h4 class="display-4">Modifier la question</h4>
+                  <h4 class="display-4">Publier des QCM</h4>
                 </div>
               </div>
-              <form method="post" action="<?php echo("modifQuestionsTrtmt.php?questionID=".$_GET['questionID']); ?>">
-                <div class="form-group">
 
-                </div>
-              </br>
-              <div id="affichageQuestions">
-                <?php
-
-                //blabla
-                if(isset($_GET["modification"])){
-                  echo '<div class="alert alert-success" role="alert">
-                  La modification a bien eut lieu
-                  </div>';
-                }
-
-                $req = $bdd->prepare('SELECT questionContent, themeName FROM tb_question, tb_theme where questionID=? and tb_theme.themeID=tb_question.themeID');
-                $req->execute(array($_GET['questionID']));
-                $data=$req->fetch();
-                echo'<i class="fas fa-book"></i> <label for="formGroupExampleInput"> Chosir un thème</label>
-                <select class="custom-select" name="nomThemeSelec" id="nomThemeSelec">
-                <option selected>'.$data["themeName"].'</option>';
+              <div class="table-responsive">
 
 
-                $reqTheme = $bdd->query('SELECT * FROM tb_theme');
-                while ($dataTheme=$reqTheme->fetch()){
-                  if($dataTheme["themeName"]!=$data["themeName"]){
-                    echo "<option value='".$dataTheme['themeName']."'>".$dataTheme['themeName']."</option>";
-                  }
-                }
-                echo' </select>';
+                <table id="mytable" class="table table-bordred table-striped">
+
+                  <thead>
 
 
+                    <th style="
+                    width: 75%;
+                    ">Nom du QCM </th>
+                    <th>Statut</th>
+                    <th> Date limite  </th>
+                    <th></th>
+                  </thead>
+                  <tbody>
+                    <?php
+                    $req ='SELECT qcmID,qcmTitle,qcmLimitDate,statusName,tb_qcm.statusID FROM tb_qcm, tb_status where tb_qcm.statusID= tb_status.statusID';
+
+                    foreach  ($bdd->query($req) as $row) {
+                      $linkPublier="publierQCM.php?qcmID=".$row['qcmID']."";
 
 
-                $reqReponses=$bdd->prepare('SELECT answerContent, answerID, trueOrFalse from tb_answer where questionID=?');
-                $reqReponses->execute(array($_GET['questionID']));
+                      echo' <tr>
+                      <td>'.$row["qcmTitle"].'</td>';
+                      echo'<td>'.$row["statusName"].'</td>';
+                      echo'<td>'.$row["qcmLimitDate"].'</td>';
 
+                      //si le statut du qcm en base est "publié", on rend inactif le bouton de publicatin
+                      echo'<td><a href="'.$linkPublier.'" class="btn btn-primary';if ($row['statusID']==1){echo " disabled";}echo'">Publier</a></td>
+                      </tr>';
+                    }
 
-
-
-                echo'  <div class="form-group"> <label for="question"><i class="far fa-question-circle"></i> Question</label> <input class="form-control" name="question" id="question" aria-describedby="emailHelp" value="'.$data['questionContent'].'"></div>
-                <i class="far fa-question-circle"></i> Réponses (cocher si correcte)</br><div class="input-group mb-3">';
-                $nombrerow=0;
-                while($dataRep=$reqReponses->fetch()){
-                  echo'  <div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" name="'.$dataRep["answerID"].'" aria-label="Checkbox for following text input"';if ($dataRep["trueOrFalse"]==1){echo 'checked';} echo'></div></div><input type="text" class="form-control" aria-label="Text input with checkbox" name="reponse'.$dataRep["answerID"].'" value="'.$dataRep["answerContent"].'"></div>';
-                  $nombrerow=$nombrerow+1;
-                }
-                if ($nombrerow<4){
-                  for($j=0; $j<4-$nombrerow;$j++){
-                    echo '<div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" name="ischecked'.$j.'" aria-label="Checkbox for following text input"></div></div><input type="text" class="form-control" aria-label="Text input with checkbox" name="reponse'.$j.'" placeholder="Nouvelle réponse proposée..."></div>';
-                  }
-                }
-                ?>
+                    ?>
+                  </tbody>
+                </table>
               </div>
-            </br>
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Modifier</button>
-            <button type="button" class="btn btn-danger btn-lg btn-block">Effacer les données</button>
-          </form>
+            </div>
+          </div>
+
+
+
 
         </div>
         <!-- suppression de l'objet sélectionné dans la table -->

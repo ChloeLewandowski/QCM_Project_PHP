@@ -75,7 +75,7 @@ require "verif_SessionTrtmt.php";
       </li>
 
       <li class="nav-item active">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="qcmCreation.php">
           <i class="fas fa-fw fa-question"></i>
           <span>Créer un QCM</span></a>
         </li>
@@ -93,6 +93,11 @@ require "verif_SessionTrtmt.php";
           <a class="nav-link" href="themeCreation.php">
             <i class="fas fa-fw fa-book"></i>
             <span>Gérer les thèmes</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="baseQCM.php">
+             <i class="fas fa-comment-dots"></i>
+            <span>Publier des QCM</span></a>
         </li>
       </ul>
       <div id="content-wrapper">
@@ -115,7 +120,17 @@ require "verif_SessionTrtmt.php";
 
             <div class="form-group">
               <?php include("affichageThemes.php"); ?>
+
+              <div class="form-group">
+    			<i class="fas fa-clock"></i> <label> Date limite</label>
+          <?php $date= new DateTime();?>
+    		    <input type="date" id="dateLimite" name="dateLimite" class="form-control" placeholder="Choose" format="yyyy/mm/dd" min="<?php echo $date->format('Y-m-d');?>" max="2025-01-01" required/>
+    		</div>
+
+
             </div>
+
+
 
             <div class="col-xs-6">
               <!-- <h3 class="text-center">Selectionner les questions à ajouter au QCM</h3> -->
@@ -124,8 +139,8 @@ require "verif_SessionTrtmt.php";
             </div>
           </br>
 
-          <button type="submit" class="btn btn-primary">Création du QCM</button>
-          <button type="button" class="btn btn-warning" onclick="eraseData()">Réinitialiser les données saisies</button>
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Création du QCM</button>
+          <button type="button" class="btn btn-warning btn-lg btn-block" onclick="eraseData()">Réinitialiser les données saisies</button>
         </div>
 
 

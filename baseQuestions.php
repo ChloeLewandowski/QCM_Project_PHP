@@ -42,11 +42,22 @@ require "verif_SessionTrtmt.php";
             <i class="fas fa-fw fa-book"></i>
             <span>Gérer les thèmes</span></a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="baseQCM.php">
+             <i class="fas fa-comment-dots"></i>
+            <span>Publier des QCM</span></a>
+        </li>
       </ul>
 
       <div id="content-wrapper">
         <div id="container-fluid">
 
+        <?php  if(isset($_GET["ajout"])): ?>
+          <div class="alert alert-success" role="alert">
+La question a bien été ajoutée à la base!
+</div>
+
+<?php endif; ?>
 
 
 
@@ -72,17 +83,19 @@ require "verif_SessionTrtmt.php";
 
 
               <th style="
-              width: 75%;
+              width: 60%;
               ">Question </th>
-              <th>Edit</th>
-              <th>Delete</th>
+              <th>Créateur...</th>
+              <th>Date de création</th>
+              <th>Modifier</th>
               </thead>
               <tbody>';
 
               foreach  ($bdd->query($req) as $row) {
                 $linkModifier="modifQuestion.php?questionID=".$row['questionID']."";
-                $linkSupprimer=//lien
-                $nbRep =  $bdd->query('SELECT COUNT(*) FROM tb_answer where questionID='.$row['questionID'])->fetchColumn();
+                $reqCreateur=$bdd->prepare('SELECT userName, userFirstName, dateAjout from tb_ajoutsquestion, tb_user where questionID=? and tb_user.userID=tb_ajoutsquestion.userID');
+                $reqCreateur->execute(array($row['questionID']));
+                $createur=$reqCreateur->fetch();
                 // echo'<tr>
                 // <td>'.$row["questionID"].'</td>
                 // <td>'.$row["questionContent"].'</td>
@@ -92,10 +105,11 @@ require "verif_SessionTrtmt.php";
                 // </tr>';
                 echo' <tr>
                 <td>'.$row["questionContent"].'</td>';
-                echo'<td><a href="'.$linkModifier.'" class="btn btn-primary btn-xs"><i class="fas fa-pen"></i></a>';
-                // <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" href='.$linkModifier.' ><i class="fas fa-pen"></i></button></p></td>
-                echo'<td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><i class="fas fa-trash-alt"></i></button></p></td>
-                </tr>';
+                echo'<td>'.$createur["userName"].' '.$createur["userFirstName"].'</td>';
+                echo'<td>'.$createur["dateAjout"].'</td>';
+                echo'<td><a href="'.$linkModifier.'" class="btn btn-primary"><i class="fas fa-pen"></i></a>';
+                  // <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" href='.$linkModifier.' ><i class="fas fa-pen"></i></button></p></td>
+
               }
 
 

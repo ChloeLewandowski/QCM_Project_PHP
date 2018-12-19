@@ -40,6 +40,11 @@ require "verif_SessionTrtmt.php";
             <i class="fas fa-fw fa-book"></i>
             <span>Gérer les thèmes</span></a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="baseQCM.php">
+             <i class="fas fa-comment-dots"></i>
+            <span>Publier des QCM</span></a>
+        </li>
       </ul>
 
       <div id="content-wrapper">

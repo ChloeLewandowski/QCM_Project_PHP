@@ -67,11 +67,11 @@ function reinitialiserChamps(){
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" href="charts.html">
+      <a class="nav-link" href="qcmCreation.php">
         <i class="fas fa-fw fa-question"></i>
         <span>Créer un QCM</span></a>
       </li>
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown active">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-brain"></i>
           <span>Gérer la base de questions</span>
@@ -79,9 +79,19 @@ function reinitialiserChamps(){
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
           <a class="dropdown-item" href="baseQuestions.php"><i class="fas fa-glasses"></i> Consulter</a>
           <a class="dropdown-item" href="questionCreation.php"><i class="fas fa-plus"></i> Ajouter</a>
-
         </div>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="themeCreation.php">
+          <i class="fas fa-fw fa-book"></i>
+          <span>Gérer les thèmes</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="baseQCM.php">
+           <i class="fas fa-comment-dots"></i>
+          <span>Publier des QCM</span></a>
+      </li>
+
     </ul>
     <div id="content-wrapper">
 
@@ -106,8 +116,8 @@ function reinitialiserChamps(){
           <div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" name="isChecked4" aria-label="Checkbox for following text input"></div></div><input type="text" class="form-control" aria-label="Text input with checkbox" name="reponse4" placeholder="Réponse proposée..."></div>
         </div>
       </br>
-      <button class="btn btn-primary" type="submit">Valider</button>
-      <button type="button" class="btn btn-danger">Effacer les données</button>
+      <button class="btn btn-primary btn-lg btn-block" type="submit">Valider</button>
+      <button type="button" class="btn btn-danger btn-lg btn-block">Effacer les données</button>
 
     </div>
   </form>

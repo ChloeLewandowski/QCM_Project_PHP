@@ -2,8 +2,8 @@
 include ("connexionBD.php" );
 
 try {
-  $req = $bdd->prepare('INSERT into tb_qcm (qcmTitle) values(?)');
-  $req->execute(array($_POST['titreQCM']));
+  $req = $bdd->prepare('INSERT into tb_qcm (qcmTitle, qcmLimitDate, statusID) values(?,?,?)');
+  $req->execute(array($_POST['titreQCM'], $_POST['dateLimite'], 2));
   $qcmID=$bdd->lastInsertId();
 
 
@@ -16,7 +16,7 @@ try {
 
     if (isset($_POST['checkQuestion'.$data['questionID']])){
 
-    
+
       $req2= $bdd->prepare('INSERT into tb_matchqcmquestion values(?,?)');
       $req2->execute(array($data['questionID'], $qcmID));
 
@@ -26,7 +26,7 @@ try {
 
 
 
-//header("location:http://localhost/projetQCM/baseQuestions.php");
+ header("location:http://localhost/projetQCM/baseQCM.php");
 } catch (Exception $e) {
   echo 'Caught exception: ',  $e->getMessage(), "\n";
 }

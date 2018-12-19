@@ -37,10 +37,15 @@ require "verif_SessionTrtmt.php";
             <a class="dropdown-item" href="questionCreation.php"><i class="fas fa-plus"></i> Ajouter</a>
           </div>
         </li>
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="themeCreation.php">
             <i class="fas fa-fw fa-book"></i>
             <span>Gérer les thèmes</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="baseQCM.php">
+               <i class="fas fa-comment-dots"></i>
+              <span>Publier des QCM</span></a>
           </li>
         </ul>
 

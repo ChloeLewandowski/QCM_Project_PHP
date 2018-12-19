@@ -1,6 +1,7 @@
 <head>
 
-  <meta charset="utf-8">
+
+<meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
@@ -23,12 +24,9 @@
 </head>
 
 <body id="page-top">
-<?php
-echo 'Bonjour '.$_SESSION['pseudo']. '! Vous êtes '. $_SESSION['userType'].'.';
-?>
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="index.html">QCM Shuffle</a>
+    <a class="navbar-brand mr-1" href="dashboardEtudiant.php">QCM Shuffle</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
       <i class="fas fa-bars"></i>
@@ -37,11 +35,11 @@ echo 'Bonjour '.$_SESSION['pseudo']. '! Vous êtes '. $_SESSION['userType'].'.';
     <!-- Navbar Search -->
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+        <!-- <input type="text" class="form-control" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
         <div class="input-group-append">
           <button class="btn btn-primary" type="button">
             <i class="fas fa-search"></i>
-          </button>
+          </button> -->
         </div>
       </div>
     </form>
